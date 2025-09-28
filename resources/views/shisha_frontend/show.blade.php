@@ -1,5 +1,29 @@
 @extends("layouts.shisha")
 
+
+@section("metadata")
+        {{-- twitter Card --}}
+    {{-- social metadata --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shesha | {{ $secret->title }}">
+    <meta name="twitter:description" content="{{ $secret->summary }}">
+    <meta name="twitter:image" content="https://sesha.website/assets/images/social-preview-secrets.jpg">
+    {{-- og --}}
+    <meta property="og:title" content="Sesha | {{ $secret->title }} ">
+    <meta property="og:description" content="{{ $secret->summary }}">
+    <meta property="og:url" content="https://sesha.website">
+    <meta property="og:image" content="https://sesha.website/assets/images/social-preview-secrets.jpg">
+    <meta property="og:type" content="website">
+  {{-- seo --}}
+    <meta name="title" content="Sesha | {{ $secret->title }}">
+    <meta name="description" content=" Sesha | {{ $secret->summary }}">
+    <meta name="keywords" content="anonymous confessions, secret sharing, read secrets online, anonymous messages, no-log platform, private confessions, whisper secrets, {{ $secret->summary }}">
+
+
+@endsection
+
+
+
 @section("hero_section")
     <h1> {{ $secret->title }}  </h1>
     <h3> Category: <strong> <a href="{{ route('shisha.bycategory', ['cat_name'=>$secret->category->slug]) }}">{{ $secret->category->title }}</a> </strong>  </h3>
