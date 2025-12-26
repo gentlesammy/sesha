@@ -1,11 +1,10 @@
 name: Deploy to Shared Hosting via FTP
 
-   on:
-     push:
+on:
+   push:
        branches:
          - main  # or master, depending on your default branch
-
-   jobs:
+jobs:
      deploy:
        name: Deploy to Shared Hosting
        runs-on: ubuntu-latest
