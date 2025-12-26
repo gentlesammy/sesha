@@ -38,7 +38,7 @@ name: Deploy to Shared Hosting via FTP
              port: ${{ secrets.FTP_PORT }}
              protocol: ${{ secrets.FTP_PROTOCOL }}
              local-dir: ./
-             server-dir: /laravel_app/
+             server-dir: /public_html/
              exclude: |
                **/.git*
                **/.git*/**
