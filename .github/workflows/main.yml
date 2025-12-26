@@ -1,0 +1,66 @@
+name: Deploy to Shared Hosting via FTP
+
+   on:
+     push:
+       branches:
+         - main  # or master, depending on your default branch
+
+   jobs:
+     deploy:
+       name: Deploy to Shared Hosting
+       runs-on: ubuntu-latest
+       
+       steps:
+         - name: Checkout code
+           uses: actions/checkout@v3
+
+         - name: Setup PHP
+           uses: shivammathur/setup-php@v2
+           with:
+             php-version: '8.3'  # Match your shared hosting PHP version
+             extensions: mbstring, bcmath, xml, curl, zip, pdo, mysql
+             tools: composer:v2
+
+         - name: Install Composer dependencies
+           run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+         - name: Create deployment package
+           run: |
+             mkdir -p deployment
+             rsync -av --exclude-from='.ftp-deploy-exclude' ./ deployment/
+             
+         - name: Deploy to Shared Hosting via FTP
+           uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+           with:
+             server: ${{ secrets.FTP_SERVER }}
+             username: ${{ secrets.FTP_USERNAME }}
+             password: ${{ secrets.FTP_PASSWORD }}
+             port: ${{ secrets.FTP_PORT }}
+             protocol: ${{ secrets.FTP_PROTOCOL }}
+             local-dir: ./
+             server-dir: /laravel_app/
+             exclude: |
+               **/.git*
+               **/.git*/**
+               **/node_modules/**
+               **/tests/**
+               **/.env
+               **/.env.example
+               **/.editorconfig
+               **/.gitignore
+               **/.gitattributes
+               **/README.md
+               **/phpunit.xml
+               **/.ftp-deploy-exclude
+               **/storage/logs/**
+               **/storage/framework/cache/data/**
+               **/storage/framework/sessions/**
+               **/storage/framework/views/**
+
+         - name: Deployment Success Notification
+           if: success()
+           run: echo "Deployment completed successfully!"
+
+         - name: Deployment Failure Notification
+           if: failure()
+           run: echo "Deployment failed. Please check the logs."
