@@ -6,7 +6,6 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css', 'resources/js/app.js',
-                'resources/js/ckeditor.js', // Include CKEditor JS
 
             ],
             refresh: true,
