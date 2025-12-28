@@ -2,7 +2,7 @@
 
 @section('hero_section')
     <div class="col-md-8 offset-md-2 text-center">
-        <h1> SECRET SHARING PLATFORM  </h1>
+        <h1> OFOFO SHARING PLATFORM  </h1>
         <P>We Listen but we dont judge</P>
         <a href="{{ route('shisha.create') }}" class="btn btn-primary"> Share  <i class="fa-solid fa-share"></i></a>
         <a href="{{ route('shisha.timeline') }}" class="btn btn-primary">Read <i class="fa-brands fa-readme"></i></a>
