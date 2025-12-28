@@ -9,7 +9,7 @@ const initializeCKEditor = (elementId, livewireProperty) => {
         .then(editor => {
             editor.model.document.on('change:data', () => {
                 // Update Livewire property when CKEditor data changes
-                @this.set(livewireProperty, editor.getData());
+                this.set(livewireProperty, editor.getData());
             });
         })
         .catch(error => {
