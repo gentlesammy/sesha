@@ -1,0 +1,62 @@
+name: Test Deploy sesha to cPanel 
+
+on:
+  push:
+    branches: [testing]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, ctype, iconv, intl, pdo, bcmath, curl, gd, zip
+        coverage: none
+
+    - name: Install dependencies
+      run: |
+        composer install --no-dev --no-progress --no-interaction --optimize-autoloader
+        npm ci --silent
+        npm run build
+
+    - name: Clean build artifacts
+      run: |
+        rm -rf node_modules/
+        rm -rf tests/
+
+    - name: Deploy to cPanel Subdomain
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./
+        server-dir: /home/seshtmmb/sesha.website/easygist/
+        # sesha.website/easygist/home/seshtmmb/sesha.website/easygist
+        exclude: |
+          **/.git*
+          **/.gitignore
+          **/.github/
+          **/node_modules/
+          **/tests/
+          **/storage/logs/*
+          **/storage/framework/cache/*
+          **/storage/framework/sessions/*
+          **/storage/framework/views/*
+          **/.env
+          **/README.md
+          **/LICENSE
+          **/composer.lock
+          **/package-lock.json
+          **/webpack.mix.js
+          **/phpunit.xml
+        dangerous-clean-slate: false
+
+    - name: Deployment success
+      run: echo "🚀 Successfully deployed to ${{ secrets.FTP_SERVER_LOCATION }} subdomain"
