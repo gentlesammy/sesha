@@ -5,7 +5,7 @@
 
 
 @section("hero_section")
-    <h1> START SHARING SHI  </h1>
+    <h1> START SHARING Ofofo  </h1>
     <P>Pour out all your heart out, like no one is watching, <br> <small>Remember we listen, we dont judge</small></P>
     <a href="#" class="btn btn-primary">Read <i class="fa-brands fa-readme"></i></a>
 @endsection
